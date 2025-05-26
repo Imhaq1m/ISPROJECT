@@ -69,10 +69,8 @@ models = {
     # Increase max_iter for convergence
     "Logistic Regression": LogisticRegression(max_iter=1000),
     "Naive Bayes": MultinomialNB(),
-    "Support Vector Machine": SVC(kernel='linear'),
     "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
     "MLP (Neural Network)": MLPClassifier(hidden_layer_sizes=(16,), max_iter=1000, random_state=42),
-    "K-Nearest Neighbors": KNeighborsClassifier(n_neighbors=5)
 }
 
 # List to store model performance
@@ -114,27 +112,31 @@ for name, model in models.items():
 # Convert to DataFrame
 df_performance = pd.DataFrame(performance)
 
-
 # Set up the plot
 metrics = ['CV Accuracy', 'Accuracy', 'Precision', 'Recall', 'F1 Score']
 model_names = df_performance['Model']
 
-x = np.arange(len(model_names))  # label locations
-width = 0.2  # width of the bars
+n_metrics = len(metrics)
+x = np.arange(len(model_names))  # label locations for models
+width = 0.2  # width of each bar
+group_width = n_metrics * width  # total width of a metric group
+x_positions = x * (group_width + 0.5)  # add spacing between groups
 
-fig, ax = plt.subplots(figsize=(14, 8))
+fig, ax = plt.subplots(figsize=(16, 8))
 
 # Create bars for each metric
 rects = []
 for i, metric in enumerate(metrics):
     rects.append(
-        ax.bar(x + i*width, df_performance[metric], width, label=metric))
+        ax.bar(x_positions + i*width,
+               df_performance[metric], width, label=metric)
+    )
 
 # Add labels, title, and legend
 ax.set_xlabel('Models')
 ax.set_ylabel('Scores')
 ax.set_title('Model Comparison: Accuracy, Precision, Recall, and F1 Score')
-ax.set_xticks(x + width*1.5)
+ax.set_xticks(x_positions + (group_width / 2))
 ax.set_xticklabels(model_names)
 ax.legend()
 
