@@ -19,7 +19,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import confusion_matrix, accuracy_score
 
-# Download NLTK stopwords (only needed once)
+# Download NLTK stopwords
 nltk.download('stopwords')
 
 # Load the dataset (spam vs ham emails)
